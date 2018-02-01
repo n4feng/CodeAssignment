@@ -19,19 +19,19 @@ with open('test.csv', newline='') as csvfile:
          gz = float(row['gz'])
 
          pre = current;
-         current = sqrt(pow(ax, 2) + pow(ay, 2) + pow(az, 2));
+         current = math.sqrt(math.pow(ax, 2) + math.pow(ay, 2) + math.pow(az, 2));
          if lc == 0:
-         	pre = current;
+            pre = current;
          current = 0.7 * current + 0.3 * pre;
          if current < 0.65:
-         	freeFallCounter++
-         	lcLast = lc;
-         else if lc  - lcLast > 5:
-         	freeFallCounter = 0
+            freeFallCounter +=1
+            lcLast = lc;
+         elif lc  - lcLast > 5:
+            freeFallCounter = 0
 
          if freeFallCounter > 10:
-         	print("fall detected")
-         	freeFallCounter = 0
-         lc++
+            print("fall detected")
+            freeFallCounter = 0
+         lc+=1
          print(az)
 
