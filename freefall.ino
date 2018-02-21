@@ -33,6 +33,7 @@ float current, pre;
 float heightBuffer[20];
 float heightPre, heightCur;
 int lc;
+int lcLast;
 
 void setup() {
   //tone(3, 5000);
@@ -55,6 +56,7 @@ void setup() {
   freeFallCounter = 0;
   current = 1.0;
   lc = 0;
+  lcLast = 0;
 
   //for bmp280
   if (!bme.begin()) {  
@@ -148,6 +150,22 @@ void loop() {
       
     pre = current;
     current = sqrt(pow(ax, 2) + pow(ay, 2) + pow(az, 2));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           
     current = 0.7f * current + 0.3f * pre;//cuurent just a simple filter, will be improved in future
     //heightBuffer[lc%20 = bme.readAltitude(1013.25); //this should be adjusted to your local forcase
     heightPre = heightCur;
@@ -155,14 +173,15 @@ void loop() {
     heightCur = 0.7f*heightCur + 0.3f*heightPre;
     //Serial.print("height is ");
     //Serial.println(heightCur);
-    Serial.println(lc);
+    //Serial.println(lc);
     if (current < 0.65) {
       freeFallCounter++;
+      lcLast = lc;
     }
-    else if(freeFallCounter>8){
+    else if(lc - lcLast > 5){
       freeFallCounter = 0;
     }
-    if (freeFallCounter > 10 && heightCur < heightPre) {
+    if (freeFallCounter > 5 && heightCur < heightPre) {
         Serial.print("current accelaration is ");
         Serial.println(0.98f - current);
         Serial.println("free fall detected");
